@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from "@repo/backend-common/config";
 import {CreateUserSchema, SigninSchema} from "@repo/common/types"
 import {prisma} from '@repo/db/client'
+import { authMiddleware } from "../middleware/authMiddleware";
 
 
 export const userRouter : any = Router()
@@ -40,6 +41,7 @@ userRouter.post('/signin', async (req : Request<{}>, res : Response<{}>) => {
     res.json({
         sucess : true,
         message : "Signin Successfully",
+        foundUser,
         token
     })
     } else {
@@ -56,6 +58,22 @@ userRouter.post('/signin', async (req : Request<{}>, res : Response<{}>) => {
         })        
     }
             
+})
+
+userRouter.get('/get-user', authMiddleware, async (req : Request<{}>, res : Response<{}>) => {
+    const userId : number | undefined = req.userId    
+    if(!userId) return
+    const user = await prisma.user.findFirst({
+        where : {id : userId}
+    })
+    if(!user) {
+        res.json({
+            message : "Nhi Mila Bhai"
+        })
+    } else {
+    res.json({
+        user
+    })}
 })
 
 userRouter.post('/signup', async (req : Request<{}>, res : Response<{}>) => {    

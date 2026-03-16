@@ -10,8 +10,8 @@ interface RoomParams {
     roomId : number
 }
 
-interface SlugParams {
-    slug : string
+interface Sharablelink {
+    sharablelink : string
 }
 
 roomRouter.post('/create-room', authMiddleware, async (req : Request<{}>, res : Response<{}>) => {
@@ -23,12 +23,16 @@ roomRouter.post('/create-room', authMiddleware, async (req : Request<{}>, res : 
         })
         return
     }
+   
 
     console.log("code come")
     const userId : number | undefined = req.userId
+    
+    console.log("userid", userId)
+    
 
     if(!userId) return
-    console.log(userId)
+   
     
    const room = await prisma.room.create({
         data : {
@@ -72,12 +76,26 @@ roomRouter.get('/chat/:roomId',  async (req : Request<RoomParams>, res : Respons
    
 })
 
-roomRouter.get('/get-room/:slug',  async (req : Request<SlugParams>, res : Response<{}>) => {
-    const slug = req.params.slug
+roomRouter.get('/all-room', authMiddleware, async(req : Request<{}>, res : Response<{}>) => {
+    const userId : number | undefined = req.userId
+    if(!userId) return
+
+    const Rooms = await prisma.room.findMany({
+        where : {adminId : userId}
+    })
+
+    res.json({
+        Rooms
+    })
+
+})
+
+roomRouter.get('/get-room/:sharablelink',  async (req : Request<Sharablelink>, res : Response<{}>) => {
+    const sharablelink = req.params.sharablelink
     try {
         const roomId = await prisma.room.findFirst({
             where : {
-                slug
+                shareLink : sharablelink
             }
         })
 

@@ -4,6 +4,7 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+
 generator client {
   provider = "prisma-client-js"  
 }
@@ -23,9 +24,10 @@ model User {
 }
 
 model Room {
-  id      Int  @id  @default(autoincrement()) @unique
-  slug    String @unique
+  id        Int  @id  @default(autoincrement()) @unique
+  slug      String @unique
   createdAt DateTime @default(now())
+  shareLink String @default(uuid())
   adminId   Int
   admin     User  @relation(fields: [adminId], references: [id])
   chats     Chat[]
