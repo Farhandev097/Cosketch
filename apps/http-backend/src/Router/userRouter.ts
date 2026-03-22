@@ -100,7 +100,7 @@ userRouter.post('/signup', async (req : Request<{}>, res : Response<{}>) => {
         
         const userBody : z.infer<typeof CreateUserSchema> = data.data
 
-        const foundUser = await prisma.user.findMany({
+        const foundUser = await prisma.user.findFirst({
             where : {
                 email : userBody.email
             }
