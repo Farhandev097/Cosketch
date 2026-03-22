@@ -69,9 +69,9 @@ export class Game {
     }
 
     async init () {
-        console.log("this room id" + this.roomId)
+        
         this.existingShapes = await getExistingShapes(this.roomId);
-        console.log("existring", this.existingShapes)
+        
         this.clearCanvas()
     }
 
