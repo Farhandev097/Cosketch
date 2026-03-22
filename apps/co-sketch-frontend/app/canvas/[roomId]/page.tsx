@@ -1,6 +1,6 @@
-import { BACKEEND_URL } from "@/app/config"
 import { RoomCanvas } from "@/component/RoomCanvas"
 import axios from "axios"
+
 
 export default async function CanvasPage ( { params } : {
     params : {
@@ -11,7 +11,7 @@ export default async function CanvasPage ( { params } : {
     const sharableLink  = (await params).roomId
     console.log("SharableLink"+sharableLink)
 
-    const res = await axios.get(`${BACKEEND_URL}/api/room/get-room/${sharableLink}`)
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEEND_URL}/api/room/get-room/${sharableLink}`)
 
      
     const roomId = res.data.id

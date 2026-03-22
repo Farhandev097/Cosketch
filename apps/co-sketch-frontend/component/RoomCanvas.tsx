@@ -1,16 +1,18 @@
 "use client"
-import { WS_URL } from "@/app/config"
 import { useEffect, useState } from "react"
 import { Canvas } from "./Canvas"
-
+import { useRouter } from "next/navigation"
 export function RoomCanvas ({roomId}  : {roomId : string}) {
-    
+
+    const router = useRouter()    
     const [socket, setSocket] = useState<WebSocket | null>(null)
 
     useEffect(() => {
         const token = localStorage.getItem('token')
-        if(!token) return
-        const ws = new WebSocket(`${WS_URL}?token=${token}`)
+        if(!token) {
+            router.push("/")            
+        }
+        const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URL}?token=${token}`)
         ws.onopen = () => {
             setSocket(ws)
             ws.send(JSON.stringify({

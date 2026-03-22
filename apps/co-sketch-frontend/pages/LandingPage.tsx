@@ -2,8 +2,8 @@
 
 import axios from "axios";
 import { useState } from "react";
-import { BACKEEND_URL } from "../app/config";
 import { useRouter } from "next/navigation";
+
 
 // ─── Auth Modal ───────────────────────────────────────────────────────────────
 function AuthModal({ mode, onClose, onSuccess } : {mode : any, onClose : any, onSuccess : any}) {
@@ -16,8 +16,10 @@ function AuthModal({ mode, onClose, onSuccess } : {mode : any, onClose : any, on
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEEND_URL
 
   const handleSubmit = async (e : any) => {
+    
     e.preventDefault();
     setError("");
     if (!email || !password ) { setError("Please fill in all fields."); return; }
@@ -26,22 +28,18 @@ function AuthModal({ mode, onClose, onSuccess } : {mode : any, onClose : any, on
     setLoading(true);
     
     if(tab === "signup") {
-    const res = await axios.post(`${BACKEEND_URL}/api/user/signup`, {email, password, name})
-    console.log(res.data)
-    if (res.data.success === true) {
+    const res = await axios.post(`${BACKEND_URL}/api/user/signup`, {email, password, name})
     
-    const user = res.data.user
-
+    if (res.data.success === true) {    
     setLoading(false);
-
-    const email = user.email
-
-    setTab("signin")
-  } else {
+        setTab("signin")
+      } else {
       setError(res.data.message)
-    }} else {
+    }
+
+  } else {
       console.log("code came" + email, password)
-      const res = await axios.post(`${BACKEEND_URL}/api/user/signin`, {email, password})
+      const res = await axios.post(`${BACKEND_URL}/api/user/signin`, {email, password})
       console.log("Code Camn" + res.data)
       if(res.data.sucess == true) {
         localStorage.setItem('token', res.data.token)

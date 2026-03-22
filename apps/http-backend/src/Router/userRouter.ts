@@ -1,6 +1,6 @@
 import { Router, Express} from "express";
-
-import {z} from 'zod'
+import bcrypt from 'bcrypt'
+import {success, z} from 'zod'
 import { Request, Response } from "express";
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from "@repo/backend-common/config";
@@ -26,22 +26,30 @@ userRouter.post('/signin', async (req : Request<{}>, res : Response<{}>) => {
     const userInput = data.data
 
     try {
+            
         
     const foundUser = await prisma.user.findFirst({
-        where : {email : userInput.email,
-                 password : userInput.password
-        }
+        where : {email : userInput.email}
     }) 
 
+
+
     if(foundUser) {
+
+      const isMatch = bcrypt.compare(userInput.password, foundUser.password)
+      if(!isMatch) {
+        res.status(401).json({
+            message : "Invalid Password"
+        })
+        return
+      }      
       const token = jwt.sign({
         userId : foundUser.id        
     }, JWT_SECRET)
 
     res.json({
         sucess : true,
-        message : "Signin Successfully",
-        foundUser,
+        message : "Signin Successfully",        
         token
     })
     } else {
@@ -91,7 +99,36 @@ userRouter.post('/signup', async (req : Request<{}>, res : Response<{}>) => {
     try {
         
         const userBody : z.infer<typeof CreateUserSchema> = data.data
-        const user = await prisma.user.create({data : userBody})
+
+        const foundUser = await prisma.user.findMany({
+            where : {
+                email : userBody.email
+            }
+        })
+
+        if(foundUser) {
+           return res.json({
+                success : false,
+                message : "User already Registered"                
+            })
+            
+        }
+
+      
+        const salt = await bcrypt.genSalt(10)
+      
+        const hashedPassword = await bcrypt.hash(userBody.password, salt)
+      
+        
+        const user = await prisma.user.create({data : {
+            email : userBody.email,
+            password : hashedPassword,
+            name : userBody.name
+        }, select : {
+            email : true,
+            name : true
+        }})
+      
         if (user) {
             res.json({
                 success : true,
@@ -99,7 +136,7 @@ userRouter.post('/signup', async (req : Request<{}>, res : Response<{}>) => {
                 user 
             })            
         } else {
-            res.json({
+           return res.json({
                 message : "incorrect Inputs"
             })
         }                               

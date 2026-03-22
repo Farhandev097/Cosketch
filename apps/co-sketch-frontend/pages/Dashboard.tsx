@@ -1,11 +1,11 @@
 "use client";
 
-import { BACKEEND_URL } from "@/app/config";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-//all icons
+
+
 function CanvasIcon({ className = "w-6 h-6" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 32 32" fill="none">
@@ -187,15 +187,16 @@ export default function Dashboard() {
 
   const [rooms, setRooms] = useState<any[]>([]);
 
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEEND_URL;
     
   const fetchUser = async (token : string) => {    
-    const res : any = await axios.get(`${BACKEEND_URL}/api/user/get-user`, {headers : {Authorization : `Bearer ${token}`}})
+    const res : any = await axios.get(`${BACKEND_URL}/api/user/get-user`, {headers : {Authorization : `Bearer ${token}`}})
     setUser(res.data.user)
   }
 
   const fetchRoom = (token : string) => {    
         
-        axios.get(`${BACKEEND_URL}/api/room/all-room`, {headers : {Authorization : `Bearer ${token}`}})
+        axios.get(`${BACKEND_URL}/api/room/all-room`, {headers : {Authorization : `Bearer ${token}`}})
         .then((res)=>{(setRooms(res.data.Rooms))})
   }
 
@@ -218,7 +219,7 @@ export default function Dashboard() {
   const handleCreate = async () => {
     if(!roomName) return
     const token = localStorage.getItem("token")
-    await axios.post(`${BACKEEND_URL}/api/room/create-room`, {name : roomName}, {headers : {Authorization : `Bearer ${token}`}}) 
+    await axios.post(`${BACKEND_URL}/api/room/create-room`, {name : roomName}, {headers : {Authorization : `Bearer ${token}`}}) 
     if(!token) return
     fetchRoom(token) 
     setShowCreateModal(false)
