@@ -6,8 +6,7 @@ export async function getExistingShapes (roomId : string) {
     console.log(res.data.message)
     const messages = res.data.message
     
-    if (!Array.isArray(messages)) {
-    console.log("Expected array but got:", messages)
+    if (!Array.isArray(messages)) {    
     return []
     }
     
