@@ -1,140 +1,145 @@
-<<<<<<< HEAD
-# Turborepo starter
+# 🎨 CoSketch – Real-Time Collaborative Drawing App
 
-This Turborepo starter is maintained by the Turborepo core team.
+CoSketch is a real-time collaborative whiteboard application that allows multiple users to draw, sketch, and brainstorm together seamlessly from anywhere.
 
-## Using this example
+---
 
-Run the following command:
+## 🚀 Live Demo
 
-```sh
-npx create-turbo@latest
-```
+👉 https://cosketch-co-sketch-frontend.vercel.app/
 
-## What's inside?
+## ✨ Features
 
-This Turborepo includes the following packages/apps:
+* 🎨 Real-time drawing with multiple users
+* 👥 Live collaboration on a shared canvas
+* ⚡ Instant updates using WebSockets
+* 🧠 Smooth drawing experience with HTML5 Canvas
+* 🔄 Sync across all connected users
+* 🏗️ Scalable backend architecture
+* 🔐 Room-based collaboration system
 
-### Apps and Packages
+---
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## 🛠️ Tech Stack
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Frontend:
 
-### Utilities
+* React.js
+* TypeScript
+* HTML5 Canvas API
 
-This Turborepo has some additional tools already setup for you:
+### Backend:
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+* Node.js
+* Express.js
+* WebSocket
 
-### Build
+### Database:
 
-To build all apps and packages, run the following command:
+* PostgreSQL
+* Prisma ORM
 
-```
-cd my-turborepo
+---
 
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## 📂 Project Structure
 
 ```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+CoSketch/
+│── frontend/      # React frontend
+│── backend/       # Node.js backend
+│── packages/      # Shared packages (if using turborepo)
+│── prisma/        # Database schema & migrations
 ```
 
-### Develop
+---
 
-To develop all apps and packages, run the following command:
+## ⚙️ Installation & Setup
 
-```
-cd my-turborepo
+### 1️⃣ Clone the repository
 
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+git clone 
+cd cosketch
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+### 2️⃣ Install dependencies
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+```bash
+pnpm install
 ```
 
-### Remote Caching
+### 3️⃣ Setup environment variables
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Create a `.env` file in the co-sketch-frontend folder:
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```env
+NEXT_PUBLIC_HTTP_BACKEEND="http://localhost:3000"
+NEXT_PUBLIC_WS_URL="ws://localhost:8080"
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+Create a `.env` file in the prisma/db folder:
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```env
+DATABASE_URL="YOUR DB URL"
 ```
 
-## Useful Links
+### 4️⃣ Run database migrations
 
-Learn more about the power of Turborepo:
+```bash
+pnpm prisma migrate dev
+```
 
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
-=======
-# Cosketch
-Collaborative Drawing page where you can chats and collaborate your drawind
->>>>>>> 087d3622fcbfc272391a2d912a94e86a1f6bd57b
+### 5️⃣ Start the development servers
+
+```bash
+pnpm run dev
+```
+
+---
+
+## 🧠 How It Works
+
+* Users join a room using a unique room ID
+* WebSocket establishes a real-time connection
+* Drawing data is sent as messages to the server
+* Server broadcasts updates to all connected users
+* Canvas updates instantly for everyone
+
+---
+
+## 📈 Future Improvements
+
+* ✏️ Add shapes & text tools
+* 🎯 Undo/Redo functionality
+* 💾 Save drawings
+* 🔐 Authentication system
+* 📱 Mobile responsiveness
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repo
+2. Create a new branch
+3. Make your changes
+4. Submit a pull request
+
+---
+
+## 📬 Contact
+
+**Farhan Khan**
+📧 farhan2005etw@gmail.com
+💼 https://www.linkedin.com/in/farhan0097/
+
+---
+
+## ⭐ Support
+
+If you like this project, please give it a ⭐ on GitHub!
+
+---
+
+**Built with ❤️ by Farhan Khan**
