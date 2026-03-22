@@ -9,7 +9,7 @@ export default async function CanvasPage ( { params } : {
 }) {
 
     const sharableLink  = (await params).roomId
-    console.log("SharableLink"+sharableLink)
+ 
 
     const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEEND_URL}/api/room/get-room/${sharableLink}`)
 
@@ -17,7 +17,7 @@ export default async function CanvasPage ( { params } : {
     const roomId = res.data.id
 
     
-    console.log("RoomId ", roomId)
+   
     
     return <RoomCanvas roomId={roomId} />
    
