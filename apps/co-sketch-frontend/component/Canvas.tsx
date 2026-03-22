@@ -7,9 +7,7 @@ export type Tool = "Circle" | "Pencil" | "Rect" | "Pen" | "Pan"
 
 export function Canvas ({roomId, socket} : {roomId : string, socket : WebSocket}) {
 
-    console.log("Room id from canvas" + roomId)
-
-    const [selectedTool,  setSelectedTool] = useState<Tool>("Circle") 
+      const [selectedTool,  setSelectedTool] = useState<Tool>("Circle") 
     const [game, setGame] = useState<Game>()   
 
     useEffect(() => {
